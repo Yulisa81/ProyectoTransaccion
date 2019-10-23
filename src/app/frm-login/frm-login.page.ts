@@ -15,11 +15,11 @@ import { CtrlWebServiceService } from '../ctrl-web-service.service';
 export class FrmLoginPage extends CtrlInternetAccessService implements OnInit {
 
   private myForm: FormGroup;
-  private usuario=new SegUsuario();
- 
-  
+  private usuario = new SegUsuario();
+  public disabled = true;
 
-  constructor(private router: Router, private formBuilder: FormBuilder, private ctrlWebServiceService : CtrlWebServiceService) {
+
+  constructor(private router: Router, private formBuilder: FormBuilder, private ctrlWebServiceService: CtrlWebServiceService) {
     super()
     this.myForm = this.validForm();
   }
@@ -46,15 +46,23 @@ export class FrmLoginPage extends CtrlInternetAccessService implements OnInit {
     } else {
       console.log("NO TIENE CONEXION");
     }
-this.ctrlWebServiceService.create(1,"");
+    this.ctrlWebServiceService.create(1, "");
 
   }
 
   private validForm() {
     return this.formBuilder.group({
-      txtUsuario: ['', Validators.compose([Validators.maxLength(50), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
-      txtPassword: ['', Validators.required]
+      txtUsuario: ['', Validators.compose([Validators.maxLength(50), Validators.required]), Validators.email],
+      txtPassword: ['', Validators.required,Validators.pattern('[a-zA-Z ]*')]
+
     });
   }
 
+  saveData() {
+
+    alert(JSON.stringify(this.myForm.value));
+  }
+  public change() {
+    this.disabled = !this.disabled;
+  }
 }
